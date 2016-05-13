@@ -1,16 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="ZeroSlack">
  
 <head>
     <title>ZeroSlack</title>
     <link rel="stylesheet" type="text/css" href="web/css/bootstrap.min.css">
-    <script type="text/javascript" src="web/js/jquery-1.12.3.min.js"></script>
-    <script type="text/javascript" src="web/js/angular.min.js"></script>
-    <script type="text/javascript" src="web/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="web/js/ext/jquery-1.12.3.min.js"></script>
+    <script type="text/javascript" src="web/js/ext/angular.min.js"></script>
+    <script type="text/javascript" src="web/js/ext/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="web/js/app.js"></script>
+    <link rel="stylesheet" type="text/css" href="web/css/app.css">
 </head>
- 
+
 <body class="container">
-    <h1>ZeroSlack App</h1>
+
+    <div ng-controller="LoginController">
+        <form ng-submit="submit()">
+            <input type="submit" id="submit" value="Login" />
+        </form>
+    </div>
+
 </body>
+<script>
+
+</script>
  
 </html>
