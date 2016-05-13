@@ -13,8 +13,8 @@
   "window": {
     "toolbar": false,
     "resizable": false,
-    "width": 1000,
-    "height": 600,
+    "width": 600,
+    "height": 400,
     "min_width": 600,
     "min_height": 400,
     "max_width": 1000,
