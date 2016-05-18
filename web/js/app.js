@@ -15,9 +15,14 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// Keep a global reference of the window object, if you don't, the window will
+// be closed automatically when the JavaScript object is garbage collected.
+let authWin;
+const {BrowserWindow} = require('electron').remote;
+
 var ZeroSlack = angular.module('ZeroSlack',[]);
 
-ZeroSlack.controller('LoginController', ['$scope', function($scope) {
+ZeroSlack.controller('AuthController', ['$scope', function($scope) {
 
     $scope.submit = function() {
 
@@ -27,15 +32,35 @@ ZeroSlack.controller('LoginController', ['$scope', function($scope) {
                 scope: "client"
             });
 
-        var chrome_app_id = chrome.runtime.id;
-        console.log(chrome_app_id);
+        authWin = new BrowserWindow({width: 900, height: 800});
+        authWin.loadURL(auth_uri);
+        authWin.show();
 
-        // Create a new window and get it
-        nw.Window.open(auth_uri, {resizable: false, id:"Auth_Window", title:"Slack Auth"}, function(new_win) {
-            // And listen to new window's focus event
-            new_win.on('focus', function () {
-                console.log('New window is focused');
-            });
+        // catch redirections in the OAuth flow and stop em before they happen.
+        function handleCallback(url) {
+            var raw_code = /code=([^&]*)/.exec(url) || null;
+            var code = (raw_code && raw_code.length > 1) ? raw_code[1] : null;
+            var error = /\?error=(.+)$/.exec(url);
+
+            if (code) {
+                console.log("Slack auth code " + code);
+            } else if (error) {
+                alert('Oops! Something went wrong and we couldn\'t' +
+                    'log you in using Slack. Please try again.');
+            }
+
+            // we did what we had to do, now close it
+            if (code || error) {
+                authWin.destroy();
+            }
+        }
+
+        // Emitted when the window is closed.
+        authWin.on('closed', () => authWin = null);
+
+        // detect redirections and handle them
+        authWin.webContents.on('will-navigate', function (event, url) {
+            handleCallback(url);
         });
     }
 }]);
