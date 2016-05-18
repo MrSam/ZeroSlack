@@ -2,33 +2,26 @@
   "name": "zeroslack",
   "version": "0.0.1",
   "description": "A Slack client that focuses on user experience and security",
-  "main": "index.html",
   "private": true,
   "keywords": [
     "node",
     "webkit",
     "win",
-    "osx"
+    "osx",
+    "slack"
   ],
-  "window": {
-    "toolbar": false,
-    "resizable": false,
-    "width": 600,
-    "height": 400,
-    "min_width": 600,
-    "min_height": 400,
-    "max_width": 1000,
-    "max_height": 600,
-    "position": "center"
-  },
   "author": "Sam Hermans <sam.hermans@gmail.com>",
-  "license": "GPL-3.0",
+  "main"    : "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron main.js"
   },
+  "license": "GPL-3.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MrSam/ZeroSlack.git"
+  },
+  "devDependencies": {
+    "electron-prebuilt": "^1.0.1"
   },
   "bugs": {
     "url": "https://github.com/MrSam/ZeroSlack/issues"
