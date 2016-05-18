@@ -37,6 +37,7 @@ ZeroSlack.controller('AuthController', ['$scope', function($scope) {
 
         authWin = new BrowserWindow({width: 600, height: 750, title: "Authenticate"});
         authWin.loadURL(auth_uri);
+        //authWin.webContents.openDevTools();
         authWin.show();
 
         // catch redirections in the OAuth flow and stop em before they happen.
@@ -58,6 +59,8 @@ ZeroSlack.controller('AuthController', ['$scope', function($scope) {
                 authWin.destroy();
             }
         }
+
+        // TODO: What if user clicks cancel ?
 
         // Emitted when the window is closed.
         authWin.on('closed', () => authWin = null);
