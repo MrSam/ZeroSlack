@@ -24,7 +24,10 @@ var ZeroSlack = angular.module('ZeroSlack',[]);
 
 ZeroSlack.controller('AuthController', ['$scope', function($scope) {
 
+    $scope.isDisabled = false;
     $scope.submit = function() {
+
+        $scope.isDisabled = true;
 
         var auth_uri = "https://slack.com/oauth/authorize?" +
             $.param({
@@ -32,7 +35,7 @@ ZeroSlack.controller('AuthController', ['$scope', function($scope) {
                 scope: "client"
             });
 
-        authWin = new BrowserWindow({width: 900, height: 800});
+        authWin = new BrowserWindow({width: 600, height: 750, title: "Authenticate"});
         authWin.loadURL(auth_uri);
         authWin.show();
 
@@ -44,6 +47,7 @@ ZeroSlack.controller('AuthController', ['$scope', function($scope) {
 
             if (code) {
                 console.log("Slack auth code " + code);
+                // go to next step!
             } else if (error) {
                 alert('Oops! Something went wrong and we couldn\'t' +
                     'log you in using Slack. Please try again.');

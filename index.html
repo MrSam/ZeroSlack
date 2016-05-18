@@ -17,8 +17,12 @@
 <body class="container">
 
     <div ng-controller="AuthController">
+    <h2>Hello there ZeroSlack user!</h2>
+    <p>Before we can get started you will need to link your slack account.</p>
+    <div class="alert alert-warning" role="alert">OAuth 2.0 is a protocol that lets this application access your Slack account without needing your password.</div>
+
         <form ng-submit="submit()">
-            <input type="submit" id="submit" value="Login" />
+            <input ng-disabled="isDisabled" type="submit" id="submit" value="Let's do this." />
         </form>
     </div>
 
