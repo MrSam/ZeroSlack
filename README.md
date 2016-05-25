@@ -19,7 +19,7 @@ $ npm install
 3) Run 
 
 ```bash
-$ npm install
+$ npm start
 ```
 
 ## License
