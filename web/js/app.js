@@ -22,7 +22,7 @@ const {BrowserWindow} = require('electron').remote;
 
 var ZeroSlack = angular.module('ZeroSlack',[]);
 
-ZeroSlack.controller('AuthController', ['$scope', function($scope) {
+ZeroSlack.controller('AuthController', ['$scope','$http', function($scope, $http) {
 
     $scope.isDisabled = false;
     $scope.submit = function() {
@@ -31,7 +31,7 @@ ZeroSlack.controller('AuthController', ['$scope', function($scope) {
 
         var auth_uri = "https://slack.com/oauth/authorize?" +
             $.param({
-                client_id: "35817589173.42673138644",
+                client_id: slack_client_id,
                 scope: "client"
             });
 
@@ -48,6 +48,22 @@ ZeroSlack.controller('AuthController', ['$scope', function($scope) {
 
             if (code) {
                 console.log("Slack auth code " + code);
+                var oauth_uri = "https://slack.com/api/oauth.access?" +
+                    $.param({
+                        client_id: slack_client_id,
+                        client_secret: slack_secret,
+                        code: code
+                    });
+
+                $http({
+                    method: 'GET',
+                    url: oauth_uri
+                }).then(function successCallback(res) {
+                    var user_token = res.data.access_token;
+                    var user_team = res.data.team_name;
+                    console.log({user_token:user_token, user_team:user_team})
+                });
+
                 // go to next step!
             } else if (error) {
                 alert('Oops! Something went wrong and we couldn\'t' +
