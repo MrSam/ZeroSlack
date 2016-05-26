@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html ng-app="ZeroSlack">
- 
+
 <head>
     <title>ZeroSlack</title>
     <link rel="stylesheet" type="text/css" href="web/css/bootstrap.min.css">
@@ -19,19 +19,37 @@
 
 <body class="container">
 
-    <div ng-controller="AuthController">
-    <h2>Hello there ZeroSlack user!</h2>
-    <p>Before we can get started you will need to link your slack account.</p>
-    <div class="alert alert-warning" role="alert">OAuth 2.0 is a protocol that lets this application access your Slack account without needing your password.</div>
+<div ng-controller="AuthController">
+
+    <div id="no_account" ng-hide="accounts.length > 0">
+        <h2>Hello there ZeroSlack user!</h2>
+        <p>Before we can get started you will need to link your slack account.</p>
+        <div class="alert alert-warning" role="alert">OAuth 2.0 is a protocol that lets this application access your
+            Slack account without needing your password.
+        </div>
 
         <form ng-submit="submit()">
-            <input ng-disabled="isDisabled" type="submit" id="submit" value="Let's do this." />
+            <input ng-disabled="isDisabled" type="submit" id="submit_first" value="Let's do this."/>
         </form>
     </div>
+
+    <div id="all_accounts" ng-show="accounts.length > 0">
+
+        <h2>Your connected accounts</h2>
+        <p>Click on the account you want to connect.</p>
+        <div class="list-group">
+            <span class="list-group-item" ng-repeat="account in accounts track by account.name"><a ng-click="connect(account)" href="#">{{account.name}}</a> <a ng-click="delete(account)" href="#">[X]</a></span>
+        </div>
+
+        <form ng-submit="submit()">
+            <input ng-disabled="isDisabled" type="submit" id="submit_other" value="Add another account"/>
+        </form>
+    </div>
+</div>
 
 </body>
 <script>
 
 </script>
- 
+
 </html>

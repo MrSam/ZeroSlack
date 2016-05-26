@@ -24,7 +24,15 @@ var ZeroSlack = angular.module('ZeroSlack',[]);
 
 ZeroSlack.controller('AuthController', ['$scope','$http', function($scope, $http) {
 
+    $scope.accounts = Lockr.getAll();
     $scope.isDisabled = false;
+
+    $scope.delete = function(account) {
+        Lockr.rm(account.name);
+        $scope.accounts = Lockr.getAll();
+    };
+
+
     $scope.submit = function() {
 
         $scope.isDisabled = true;
@@ -47,7 +55,6 @@ ZeroSlack.controller('AuthController', ['$scope','$http', function($scope, $http
             var error = /\?error=(.+)$/.exec(url);
 
             if (code) {
-                console.log("Slack auth code " + code);
                 var oauth_uri = "https://slack.com/api/oauth.access?" +
                     $.param({
                         client_id: slack_client_id,
@@ -59,9 +66,8 @@ ZeroSlack.controller('AuthController', ['$scope','$http', function($scope, $http
                     method: 'GET',
                     url: oauth_uri
                 }).then(function successCallback(res) {
-                    var user_token = res.data.access_token;
-                    var user_team = res.data.team_name;
-                    console.log({user_token:user_token, user_team:user_team})
+                    Lockr.set(res.data.team_name, {token:res.data.access_token, name:res.data.team_name});
+                    $scope.accounts = Lockr.getAll();
                 });
 
                 // go to next step!
