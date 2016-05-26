@@ -11,7 +11,7 @@
     "slack"
   ],
   "author": "Sam Hermans <sam.hermans@gmail.com>",
-  "main"    : "main.js",
+  "main": "main.js",
   "scripts": {
     "start": "electron main.js"
   },
@@ -26,5 +26,8 @@
   "bugs": {
     "url": "https://github.com/MrSam/ZeroSlack/issues"
   },
-  "homepage": "https://github.com/MrSam/ZeroSlack#readme"
+  "homepage": "https://github.com/MrSam/ZeroSlack#readme",
+  "dependencies": {
+    "electron-window-manager": "^1.0.1"
+  }
 }
