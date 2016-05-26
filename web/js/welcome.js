@@ -48,7 +48,7 @@ ZeroSlack.controller('AuthController', ['$scope','$http', function($scope, $http
             });
 
         authWin = new BrowserWindow({width: 600, height: 750, title: "Authenticate"});
-        authWin.loadURL("");
+        authWin.loadURL(auth_uri);
         authWin.show();
 
         // catch redirections in the OAuth flow and stop em before they happen.
