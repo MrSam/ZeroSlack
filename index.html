@@ -35,14 +35,14 @@
 
     <div id="all_accounts" ng-show="accounts.length > 0">
 
-        <h2>Your connected accounts</h2>
-        <p>Click on the account you want to connect.</p>
+        <h2>Your linked accounts</h2>
+        <p>Click on the account you want to connect, or [X] to delete.</p>
         <div class="list-group">
             <span class="list-group-item" ng-repeat="account in accounts track by account.name"><a ng-click="connect(account)" href="#">{{account.name}}</a> <a ng-click="delete(account)" href="#">[X]</a></span>
         </div>
 
         <form ng-submit="submit()">
-            <input ng-disabled="isDisabled" type="submit" id="submit_other" value="Add another account"/>
+            <input ng-disabled="isDisabled" type="submit" id="submit_other" value="Link another account"/>
         </form>
     </div>
 </div>
