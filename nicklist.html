@@ -19,14 +19,8 @@
 
 <body class="container">
 
-<h2>Hello world</h2>
+<h2>Hello</h2>
+<div id="messages"></div>
 
-<script type="text/javascript">
-    ipc.send('nicklist_init');
-
-    ipc.on('init', function(event, data) {
-        console.log(data);
-    });
-</script>
 </body>
 </html>
