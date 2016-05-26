@@ -19,6 +19,7 @@
 // be closed automatically when the JavaScript object is garbage collected.
 let authWin;
 const {BrowserWindow} = require('electron').remote;
+const ipc = require('electron').ipcRenderer;
 
 var ZeroSlack = angular.module('ZeroSlack',[]);
 
@@ -32,6 +33,9 @@ ZeroSlack.controller('AuthController', ['$scope','$http', function($scope, $http
         $scope.accounts = Lockr.getAll();
     };
 
+    $scope.connect = function() {
+        ipc.send('open_nicklist');
+    };
 
     $scope.submit = function() {
 
@@ -44,8 +48,7 @@ ZeroSlack.controller('AuthController', ['$scope','$http', function($scope, $http
             });
 
         authWin = new BrowserWindow({width: 600, height: 750, title: "Authenticate"});
-        authWin.loadURL(auth_uri);
-        //authWin.webContents.openDevTools();
+        authWin.loadURL("");
         authWin.show();
 
         // catch redirections in the OAuth flow and stop em before they happen.

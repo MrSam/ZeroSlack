@@ -2,7 +2,7 @@
 <html ng-app="ZeroSlack">
 
 <head>
-    <title>ZeroSlack</title>
+    <title>ZeroSlack accounts</title>
     <link rel="stylesheet" type="text/css" href="web/css/bootstrap.min.css">
     <script type="text/javascript">
         window.$ = window.jQuery = require('./web/js/ext/jquery-1.12.3.min.js');
@@ -13,7 +13,7 @@
     <script type="text/javascript" src="web/js/ext/lockr.min.js"></script>
 
     <script type="text/javascript" src="web/js/config.js"></script>
-    <script type="text/javascript" src="web/js/app.js"></script>
+    <script type="text/javascript" src="web/js/welcome.js"></script>
     <link rel="stylesheet" type="text/css" href="web/css/app.css">
 </head>
 
@@ -38,12 +38,14 @@
         <h2>Your linked accounts</h2>
         <p>Click on the account you want to connect, or [X] to delete.</p>
         <div class="list-group">
-            <span class="list-group-item" ng-repeat="account in accounts track by account.name"><a ng-click="connect(account)" href="#">{{account.name}}</a> <a ng-click="delete(account)" href="#">[X]</a></span>
+            <span class="list-group-item" ng-repeat="account in accounts track by account.name">{{account.name}} <a ng-click="delete(account)" href="#">[X]</a></span>
         </div>
 
         <form ng-submit="submit()">
             <input ng-disabled="isDisabled" type="submit" id="submit_other" value="Link another account"/>
         </form>
+
+        <button ng-click="connect()">Go online</button>
     </div>
 </div>
 

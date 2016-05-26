@@ -21,19 +21,20 @@ const {app} = electron;
 // Module to create native browser window.
 const {BrowserWindow} = electron;
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
+var ipc_main = require('electron').ipcMain;
+
 let win;
+let nickWin;
 
 function createWindow() {
     // Create the browser window.
-    win = new BrowserWindow({width: 800, height: 600, title: "ZeroSlack"});
+    win = new BrowserWindow({width: 500, height: 400, title: "ZeroSlack"});
 
     // and load the index.html of the app.
-    win.loadURL('file://' + __dirname + '/index.html');
+    win.loadURL('file://' + __dirname + '/welcome.html');
 
     // Open the DevTools.
-    win.webContents.openDevTools();
+    //win.webContents.openDevTools();
 
     // Emitted when the window is closed.
     win.on('closed', () => {
@@ -56,4 +57,33 @@ app.on('activate', () => {
     if (win === null) {
     createWindow();
 }
+});
+
+ipc_main.on('open_nicklist', function(event) {
+    if (nickWin != null) {
+        console.log("We had an open nicklist");
+        nickWin.show();
+    } else {
+        console.log("Opening new nicklist");
+        // only do this if there is no window yet
+        nickWin = new BrowserWindow({width: 300, height: 700, x:40,y:40});
+        nickWin.loadURL('file://' + __dirname + '/nicklist.html');
+        nickWin.show();
+        nickWin.webContents.openDevTools();
+
+        nickWin.on('focus', function () {
+            nickWin.webContents.send('_message', 'sammeke');
+        });
+
+        nickWin.on('closed', () => {
+            nickWin = null;
+        });
+
+        console.log("Closing index window");
+        win.close();
+    }
+});
+
+ipc_main.on('nicklist_init', function(event) {
+    event.sender.send("init", "1234");
 });

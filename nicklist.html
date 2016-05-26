@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html ng-app="ZeroSlack">
+
+<head>
+    <title>Contacts</title>
+    <link rel="stylesheet" type="text/css" href="web/css/bootstrap.min.css">
+    <script type="text/javascript">
+        window.$ = window.jQuery = require('./web/js/ext/jquery-1.12.3.min.js');
+    </script>
+    <script type="text/javascript" src="web/js/ext/angular.min.js"></script>
+    <script type="text/javascript" src="web/js/ext/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="web/js/ext/lockr.min.js"></script>
+
+    <script type="text/javascript" src="web/js/config.js"></script>
+    <script type="text/javascript" src="web/js/nicklist.js"></script>
+    <link rel="stylesheet" type="text/css" href="web/css/app.css">
+</head>
+
+<body class="container">
+
+<h2>Hello world</h2>
+
+<script type="text/javascript">
+    ipc.send('nicklist_init');
+
+    ipc.on('init', function(event, data) {
+        console.log(data);
+    });
+</script>
+</body>
+</html>
