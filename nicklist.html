@@ -21,7 +21,7 @@
 
 <h2>Hello</h2>
 <div ng-controller="NickListController">
-
+    <div ng-repeat="connection in connections"> {{connection.getMyName()}} @ {{connection.getAccountName()}} </div>
     <div ng-repeat="rawmessage in rawmessages track by $index"> {{rawmessage}} </div>
 </div>
 <div id="messages"></div>
