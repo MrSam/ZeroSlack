@@ -28,17 +28,18 @@ ipc.on('init', function(event, data) {
 });
 
 // create the SlackConnection class
-function SlackConnection(account_name, ws, channels, ims, self, team) {
+function SlackConnection(account_name, ws, channels, users, ims, self, team) {
     this.account_name = account_name;
     this.ws = ws; // the socket to use when replying
     this.channels = channels; // slack channels
+    this.users = users; // slack users
     this.ims = ims; // open im's
     this.self = self; // my own information (like nick)
     this.team = team; // team information (like name etc)
 
     this.getAccountName = function() { return this.account_name;};
     this.getMyName = function() { return this.self.name;};
-    this.getChannels    = function() { return this.channels;}
+    this.getChannels    = function() { return this.channels;};
 }
 
 // EVENTS
@@ -55,7 +56,7 @@ ZeroSlack.controller('NickListController', ['$scope','$http', function($scope, $
     // EVENT: New websocket created
     eventEmitter.on("new_socket", function(event)
     {
-        $scope.connections.push(new SlackConnection(event.account_name, event.ws, event.channels, event.ims, event.self, event.team));
+        $scope.connections.push(new SlackConnection(event.account_name, event.ws, event.channels, event.users, event.ims, event.self, event.team));
         $scope.$apply();
     });
 
@@ -96,7 +97,7 @@ function connectToSlack(account_name, account_token) {
             var ws = new WebSocket(slackResponse.url); // Use the path we got back from the GET request
 
             // Store this conenction using account_name as key
-            eventEmitter.emit("new_socket", {"account_name": account_name, "ws": ws, "channels": slackResponse.channels, "ims": slackResponse.ims, "self": slackResponse.self, "team": slackResponse.team});
+            eventEmitter.emit("new_socket", {"account_name": account_name, "ws": ws, "channels": slackResponse.channels, "users": slackResponse.users, "ims": slackResponse.ims, "self": slackResponse.self, "team": slackResponse.team});
 
             ws.on('message', function (data, flags) {
                 //console.log("<<", account_name, data);
