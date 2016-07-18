@@ -62,7 +62,7 @@ ZeroSlack.controller('NickListController', ['$scope','$http', function($scope, $
     // EVENT: Raw Message
     eventEmitter.on("rawmessage", function(event)
     {
-        //console.log(data);
+        console.log(event);
         $scope.rawmessages.push(JSON.stringify(event.message));
         $scope.$apply();
     });

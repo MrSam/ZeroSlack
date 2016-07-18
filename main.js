@@ -66,10 +66,10 @@ ipc_main.on('open_nicklist', function(event) {
     } else {
         console.log("Opening new nicklist");
         // only do this if there is no window yet
-        nickWin = new BrowserWindow({width: 300, height: 700, x:40,y:40});
+        nickWin = new BrowserWindow({width: 240, height: 500, x:80,y:80});
         nickWin.loadURL('file://' + __dirname + '/nicklist.html');
         nickWin.show();
-        nickWin.webContents.openDevTools();
+        //nickWin.webContents.openDevTools();
 
         //nickWin.on('focus', function () {
         //    nickWin.webContents.send('_message', 'sammeke');

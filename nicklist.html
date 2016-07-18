@@ -18,13 +18,18 @@
 </head>
 
 <body class="container">
-
-<h2>Hello</h2>
 <div ng-controller="NickListController">
-    <div ng-repeat="connection in connections"> {{connection.getMyName()}} @ {{connection.getAccountName()}} </div>
-    <div ng-repeat="rawmessage in rawmessages track by $index"> {{rawmessage}} </div>
-</div>
-<div id="messages"></div>
+    <div ng-repeat="connection in connections">
+        <span class="badge">{{connection.getMyName()}} @ {{connection.getAccountName()}}</span><br/>
 
+        <div ng-repeat="channel in connection.channels">
+            <span class="label label-primary" id="{{channel.id}}">#{{channel.name}}</span>
+        </div>
+        <div ng-repeat="im in connection.ims">
+            <span class="label label-success" id="{{im.id}}">{{im.user}}</span>
+        </div>
+        <br/>
+    </div>
+</div>
 </body>
 </html>
