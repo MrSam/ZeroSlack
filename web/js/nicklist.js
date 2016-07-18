@@ -35,6 +35,15 @@ var eventEmitter = new events.EventEmitter();
 var ZeroSlack = angular.module('ZeroSlack',[]);
 ZeroSlack.controller('NickListController', ['$scope','$http', function($scope, $http) {
 
+    $scope.rawmessages = [];
+
+    // EVENTS
+    eventEmitter.on("rawmessage", function(data)
+    {
+        //console.log(data);
+        $scope.rawmessages.push(JSON.stringify(data.message));
+        $scope.$apply();
+    });
 
 }]);
 
@@ -46,8 +55,6 @@ function SlackConnection(ws, channels, ims, team) {
     this.channels = channels; // slack channels
     this.ims = ims; // open im's
     this.team = team; // team information (like name etc)
-
-
 }
 
 // NODE.JS
@@ -94,10 +101,3 @@ function connectToSlack(account_name, account_token) {
     });
 }
 
-
-// EVENTS
-eventEmitter.on("rawmessage", function(data)
-{
-    console.log(data);
-    document.body.innerHTML += JSON.stringify(data.message) + "<br>";
-});
