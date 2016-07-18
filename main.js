@@ -69,11 +69,11 @@ ipc_main.on('open_nicklist', function(event) {
         nickWin = new BrowserWindow({width: 300, height: 700, x:40,y:40});
         nickWin.loadURL('file://' + __dirname + '/nicklist.html');
         nickWin.show();
-        //nickWin.webContents.openDevTools();
+        nickWin.webContents.openDevTools();
 
-        nickWin.on('focus', function () {
-            nickWin.webContents.send('_message', 'sammeke');
-        });
+        //nickWin.on('focus', function () {
+        //    nickWin.webContents.send('_message', 'sammeke');
+        //});
 
         nickWin.on('closed', () => {
             nickWin = null;

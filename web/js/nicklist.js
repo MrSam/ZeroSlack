@@ -38,6 +38,17 @@ ZeroSlack.controller('NickListController', ['$scope','$http', function($scope, $
 
 }]);
 
+let open_connections = [];
+
+// create the SlackConnection class
+function SlackConnection(ws, channels, ims, team) {
+    this.ws = ws; // the socket to use when replying
+    this.channels = channels; // slack channels
+    this.ims = ims; // open im's
+    this.team = team; // team information (like name etc)
+
+
+}
 
 // NODE.JS
 function connectToSlack(account_name, account_token) {
@@ -60,15 +71,20 @@ function connectToSlack(account_name, account_token) {
 
         res.on('end', function () {
             var slackResponse = JSON.parse(body);
-            var WebSocket = require('ws');
 
-            var ws = new WebSocket(slackResponse.url);
+            var WebSocket = require('ws'); // new websocket for this connection
+            var ws = new WebSocket(slackResponse.url); // Use the path we got back from the GET request
+
+            // Store this conenction using account_name as key
+            open_connections[account_name] = new SlackConnection(ws, slackResponse.channels, slackResponse.ims, slackResponse.team);
+
+            console.log(open_connections);
 
             ws.on('message', function (data, flags) {
                 //console.log("<<", account_name, data);
 
                 var messageData = JSON.parse(data);
-                eventEmitter.emit("rawmessage", {"account_name": account_name, "message": messageData, "ws": ws});
+                eventEmitter.emit("rawmessage", {"account_name": account_name, "message": messageData});
             });
 
             ws.on('close', function close() {
