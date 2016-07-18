@@ -27,6 +27,14 @@ ipc.on('init', function(event, data) {
 
 });
 
+// create the SlackConnection class
+function SlackConnection(ws, channels, ims, team) {
+    this.ws = ws; // the socket to use when replying
+    this.channels = channels; // slack channels
+    this.ims = ims; // open im's
+    this.team = team; // team information (like name etc)
+}
+
 // EVENTS
 var events = require('events');
 var eventEmitter = new events.EventEmitter();
@@ -35,27 +43,26 @@ var eventEmitter = new events.EventEmitter();
 var ZeroSlack = angular.module('ZeroSlack',[]);
 ZeroSlack.controller('NickListController', ['$scope','$http', function($scope, $http) {
 
-    $scope.rawmessages = [];
+    $scope.rawmessages = []; // this is POC remove later
+    $scope.connections = []; // keep track of all open connections
 
-    // EVENTS
-    eventEmitter.on("rawmessage", function(data)
+    // EVENT: New websocket created
+    eventEmitter.on("new_socket", function(event)
+    {
+        $scope.connections[event.account_name] = new SlackConnection(event.ws, event.channels, event.ims, event.team);
+        $scope.$apply();
+    });
+
+    // EVENT: Raw Message
+    eventEmitter.on("rawmessage", function(event)
     {
         //console.log(data);
-        $scope.rawmessages.push(JSON.stringify(data.message));
+        $scope.rawmessages.push(JSON.stringify(event.message));
         $scope.$apply();
     });
 
 }]);
 
-let open_connections = [];
-
-// create the SlackConnection class
-function SlackConnection(ws, channels, ims, team) {
-    this.ws = ws; // the socket to use when replying
-    this.channels = channels; // slack channels
-    this.ims = ims; // open im's
-    this.team = team; // team information (like name etc)
-}
 
 // NODE.JS
 function connectToSlack(account_name, account_token) {
@@ -83,9 +90,7 @@ function connectToSlack(account_name, account_token) {
             var ws = new WebSocket(slackResponse.url); // Use the path we got back from the GET request
 
             // Store this conenction using account_name as key
-            open_connections[account_name] = new SlackConnection(ws, slackResponse.channels, slackResponse.ims, slackResponse.team);
-
-            console.log(open_connections);
+            eventEmitter.emit("new_socket", {"account_name": account_name, "ws": ws, "channels": slackResponse.channels, "ims": slackResponse.ims, "team": slackResponse.team});
 
             ws.on('message', function (data, flags) {
                 //console.log("<<", account_name, data);
